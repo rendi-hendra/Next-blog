@@ -10,36 +10,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { api } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { api } from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const registerFormSchema = z.object({
-  name: z.string().min(4).max(50),
+const loginFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(4).max(100),
 });
 
-type RegisterFormSchema = z.infer<typeof registerFormSchema>;
+type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
-export default function Register() {
+export default function Login() {
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
-  const form = useForm<RegisterFormSchema>({
-    resolver: zodResolver(registerFormSchema),
+  const form = useForm<LoginFormSchema>({
+    resolver: zodResolver(loginFormSchema),
   });
 
   const { handleSubmit, control } = form;
 
   const onSubmit = handleSubmit((val) => {
     api
-      .post("/api/users", {
-        name: val.name,
+      .post("/api/users/login", {
         email: val.email,
         password: val.password,
       })
@@ -59,26 +57,13 @@ export default function Register() {
           <div className="md:w-[30rem] lg:w-[30rem] flex items-center justify-center shadow-lg rounded-xl mx-5">
             <div className="max-w-md w-full p-6">
               <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-                Sign Up
+                Login
               </h1>
               <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
                 Join to Our Community with all time access and free
               </h1>
               <Form {...form}>
                 <form onSubmit={onSubmit} className="space-y-4">
-                  <FormField
-                    control={control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input type="text" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={control}
                     name="email"
@@ -108,16 +93,16 @@ export default function Register() {
                   <p className="text-red-500">{error}</p>
                   <div>
                     <Button type="submit" className="w-full ">
-                      Sing Up
+                      Login
                     </Button>
                   </div>
                 </form>
               </Form>
               <div className="mt-4 text-sm text-gray-600 text-center">
                 <p>
-                  Already have an account?{" "}
-                  <Link className="text-black hover:underline" href="/login">
-                    Login
+                  Dont have an account yet?{" "}
+                  <Link className="text-black hover:underline" href="/">
+                    Sing Up
                   </Link>
                 </p>
               </div>
