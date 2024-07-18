@@ -17,6 +17,7 @@ import { z } from "zod";
 import { api } from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const loginFormSchema = z.object({
   email: z.string().email(),
@@ -37,12 +38,14 @@ export default function Login() {
 
   const onSubmit = handleSubmit((val) => {
     api
-      .post("/api/users/login", {
+      .post("/users/login", {
         email: val.email,
         password: val.password,
       })
       .then((response) => {
-        router.push("/login");
+        const token = response.data.data.token;
+        Cookies.set("token", token);
+        router.push("/dashboard");
       })
       .catch((error) => {
         console.log(error.response.data.errors);

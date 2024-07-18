@@ -38,7 +38,7 @@ export default function Register() {
 
   const onSubmit = handleSubmit((val) => {
     api
-      .post("/api/users", {
+      .post("/users", {
         name: val.name,
         email: val.email,
         password: val.password,
