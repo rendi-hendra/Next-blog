@@ -18,13 +18,7 @@ import { api } from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
-const loginFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(4).max(100),
-});
-
-type LoginFormSchema = z.infer<typeof loginFormSchema>;
+import { LoginFormSchema, loginFormSchema } from "@/lib/formSchema";
 
 export default function Login() {
   const [error, setError] = useState<string>("");
@@ -36,11 +30,11 @@ export default function Login() {
 
   const { handleSubmit, control } = form;
 
-  const onSubmit = handleSubmit((val) => {
+  const onSubmit = handleSubmit((value) => {
     api
       .post("/users/login", {
-        email: val.email,
-        password: val.password,
+        email: value.email,
+        password: value.password,
       })
       .then((response) => {
         const token = response.data.data.token;
