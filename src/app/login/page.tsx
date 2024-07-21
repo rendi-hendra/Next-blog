@@ -45,7 +45,7 @@ export default function Login() {
       .then((response) => {
         const token = response.data.data.token;
         Cookies.set("token", token);
-        router.push("/dashboard");
+        router.replace("/dashboard", { scroll: false });
       })
       .catch((error) => {
         console.log(error.response.data.errors);
