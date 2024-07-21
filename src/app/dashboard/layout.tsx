@@ -3,7 +3,7 @@ import Sidebar from "@/components/layout/sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next Shadcn Dashboard Starter",
+  title: "Dashboard",
   description: "Basic dashboard with Next.js and Shadcn",
 };
 

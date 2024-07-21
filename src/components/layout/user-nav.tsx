@@ -15,7 +15,6 @@ import { api } from "@/lib/api";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { signOut, useSession } from 'next-auth/react';
 
 type DataUser = {
   name: string;
@@ -50,7 +49,6 @@ export function UserNav() {
         headers: { Authorization: cookie },
       })
       .then((response) => {
-        console.log(response.data);
         Cookies.remove("token");
         router.push("/login");
       })

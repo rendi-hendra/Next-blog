@@ -1,3 +1,5 @@
+"use server";
+
 import { NextResponse, NextRequest } from "next/server";
 import { api } from "./lib/api";
 
@@ -26,6 +28,8 @@ export async function middleware(req: NextRequest) {
   if (token) {
     userToken = await cekToken(token);
   }
+
+  const response = NextResponse.next();
 
   // Jika halaman yang diakses adalah halaman yang dilindungi
   if (protectedRoutes.includes(pathname)) {
