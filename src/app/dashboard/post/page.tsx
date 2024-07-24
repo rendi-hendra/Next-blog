@@ -1,123 +1,59 @@
 "use client";
 
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { postFormSchema, PostFormSchema } from "@/lib/formSchema";
+import CreatePost from "@/components/post/create-post/create-post";
+import YouPost from "@/components/post/you-post/you-post";
 import { Heading } from "@/components/ui/heading";
-import { useRouter } from "next/navigation";
-import { api } from "@/lib/api";
-import Cookies from "js-cookie";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
 
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
-  { title: "Profile", link: "/dashboard/profile" },
+  { title: "Post", link: "/dashboard/post" },
 ];
+
 export default function Post() {
-  const router = useRouter();
-  const token = Cookies.get("token");
+  const [postToogle, setPostToggle] = useState<boolean>(true);
 
-  const form = useForm<PostFormSchema>({
-    resolver: zodResolver(postFormSchema),
-  });
-
-  function onSubmit(data: PostFormSchema) {
-    api
-      .post(
-        "/posts",
-        {
-          title: data.title,
-          body: data.body,
-          categoryId: 1,
-        },
-        {
-          headers: { Authorization: token },
-        }
-      )
-      .then((response) => {
-        router.replace("/dashboard");
-        toast({
-          title: "You submitted the following values:",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(response.data.data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
-      });
-  }
   return (
-    <ScrollArea className="h-full">
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-        <Breadcrumbs items={breadcrumbItems} />
-
-        <div className="flex items-center justify-between">
-          <Heading title="Create Your Post" />
+    <>
+      <ScrollArea className="h-full">
+        <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className="pt-5">
+            <Tabs defaultValue="createPost" className="">
+              <TabsList>
+                <TabsTrigger
+                  value="createPost"
+                  onClick={() => {
+                    setPostToggle(true);
+                  }}
+                >
+                  Create Post
+                </TabsTrigger>
+                <TabsTrigger
+                  value="youPost"
+                  onClick={() => {
+                    setPostToggle(false);
+                  }}
+                >
+                  You Post
+                </TabsTrigger>
+              </TabsList>
+              <div className="flex items-center justify-between my-5">
+                <Heading title={postToogle ? "Create Post" : "Your Post"} />
+              </div>
+              <TabsContent value="createPost">
+                <CreatePost />
+              </TabsContent>
+              <TabsContent value="youPost">
+                <YouPost />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-
-        <div className="">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-6"
-            >
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Tell us a little bit about yourself"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="body"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Body</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Tell us a little bit about yourself"
-                        className="resize-y"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full h-12">
-                Post
-              </Button>
-            </form>
-          </Form>
-        </div>
-      </div>
-    </ScrollArea>
+      </ScrollArea>
+    </>
   );
 }

@@ -25,14 +25,14 @@ type DataPost = {
 };
 
 export default function Dashboard() {
-  const cookie = Cookies.get("token");
+  const token = Cookies.get("token");
   const [data, setData] = useState<DataPost[]>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     api
       .get("/posts", {
-        headers: { Authorization: cookie },
+        headers: { Authorization: token },
       })
       .then((response) => {
         setData(response.data.data);
@@ -48,7 +48,7 @@ export default function Dashboard() {
       <ScrollArea className="h-full">
         <h1 className="text-center text-2xl mt-10">Dashboard</h1>
 
-        <div className="mx-10 mt-10 mb-10">
+        <div className="mx-3 mt-10 mb-10 lg:mx-10">
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex flex-col space-y-3">
