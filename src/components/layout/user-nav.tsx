@@ -23,7 +23,6 @@ type DataUser = {
 };
 
 export function UserNav() {
-  // const { data: session } = useSession();
   const cookie = Cookies.get("token");
   const router = useRouter();
 
