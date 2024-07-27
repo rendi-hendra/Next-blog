@@ -80,9 +80,6 @@ export default function YouPost() {
         });
         setData((prevData) => prevData?.filter((post) => post.id !== id));
       })
-      .catch((error) => {
-        console.log(error.response.data.errors);
-      });
   };
 
   return (

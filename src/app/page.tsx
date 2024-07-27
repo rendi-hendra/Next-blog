@@ -47,7 +47,6 @@ export default function Register() {
         router.push("/login");
       })
       .catch((error) => {
-        console.log(error.response.data.errors);
         setError(error.response.data.errors);
       });
   });

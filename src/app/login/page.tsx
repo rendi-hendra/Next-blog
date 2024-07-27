@@ -42,7 +42,6 @@ export default function Login() {
         router.replace("/dashboard", { scroll: false });
       })
       .catch((error) => {
-        console.log(error.response.data.errors);
         setError(error.response.data.errors);
       });
   });

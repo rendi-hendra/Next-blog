@@ -61,9 +61,6 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
         });
         onUpdate(response.data.data);
       })
-      .catch((error) => {
-        console.log(error.response.data.errors);
-      });
   }
 
   return (

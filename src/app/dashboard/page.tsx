@@ -37,9 +37,6 @@ export default function Dashboard() {
       .then((response) => {
         setData(response.data.data);
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data.errors);
       });
   }, []);
 
