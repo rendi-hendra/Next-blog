@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DialogClose,
@@ -17,23 +17,44 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { postFormSchema, PostFormSchema } from "@/lib/formSchema";
+import { Category, postFormSchema, PostFormSchema } from "@/lib/formSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { api } from "@/lib/api";
-import {toast } from "sonner";
+import { toast } from "sonner";
 
 type ButtonProps = {
   id: number;
   title: string;
   body: string;
-  onUpdate: (updatedPost: { id: number; title: string; body: string }) => void;
+  categoryId: number;
+  onUpdate: (updatedPost: {
+    id: number;
+    title: string;
+    body: string;
+    categoryId: number;
+  }) => void;
 };
 
-export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
+export default function EditPost({
+  id,
+  title,
+  body,
+  categoryId,
+  onUpdate,
+}: ButtonProps) {
   const token = Cookies.get("token");
+
+  const [categories, setCategories] = useState<Category[]>();
 
   const form = useForm<PostFormSchema>({
     resolver: zodResolver(postFormSchema),
@@ -43,6 +64,16 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
     },
   });
 
+  useEffect(() => {
+    api
+      .get("/categories", {
+        headers: { Authorization: token },
+      })
+      .then((response) => {
+        setCategories(response.data.data);
+      });
+  }, []);
+
   function onSubmit(data: PostFormSchema) {
     api
       .patch(
@@ -50,6 +81,7 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
         {
           title: data.title,
           body: data.body,
+          categoryId: Number(data.category),
         },
         {
           headers: { Authorization: token },
@@ -60,7 +92,7 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
           duration: 5000,
         });
         onUpdate(response.data.data);
-      })
+      });
   }
 
   return (
@@ -77,7 +109,7 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="">
+            <div>
               <FormField
                 control={form.control}
                 name="title"
@@ -96,7 +128,39 @@ export default function EditPost({ id, title, body, onUpdate }: ButtonProps) {
                 )}
               />
             </div>
-            <div className="">
+            <div>
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={String(categoryId)}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories?.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={String(category.id)}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
               <FormField
                 control={form.control}
                 name="body"

@@ -10,7 +10,15 @@ export const postFormSchema = z.object({
   body: z.string().min(10, {
     message: "Bio must be at least 10 characters.",
   }),
+  category: z.string({
+    message: "Category is required.",
+  }),
 });
+
+export type Category = {
+  id: number;
+  name: string;
+};
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 export type PostFormSchema = z.infer<typeof postFormSchema>;

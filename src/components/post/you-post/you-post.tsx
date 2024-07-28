@@ -39,6 +39,7 @@ type DataPost = {
   body: string;
   slug: string;
   category: string;
+  categoryId: number;
   createdAt: string;
 };
 
@@ -79,7 +80,7 @@ export default function YouPost() {
           duration: 5000,
         });
         setData((prevData) => prevData?.filter((post) => post.id !== id));
-      })
+      });
   };
 
   return (
@@ -117,6 +118,7 @@ export default function YouPost() {
                           id={post.id}
                           title={post.title}
                           body={post.body}
+                          categoryId={post.categoryId}
                           onUpdate={handleUpdate}
                         />
                       </DialogContent>
