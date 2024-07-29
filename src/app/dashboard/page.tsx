@@ -43,21 +43,18 @@ export default function Dashboard() {
   return (
     <>
       <ScrollArea className="h-full">
-        <h1 className="text-center text-2xl mt-10">Dashboard</h1>
+        <h1 className="text-center text-4xl mt-10">Dashboard</h1>
 
         <div className="mx-3 mt-10 mb-10 lg:mx-10">
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex flex-col space-y-3">
                   <Skeleton className="h-[200px] rounded-xl" />
-                  <div className="space-y-2">
-                    {/* <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" /> */}
-                  </div>
+                  <div className="space-y-2"></div>
                 </div>
               ))
             : data?.map((post) => (
-                <Card key={post.id} className="mb-4">
+                <Card key={post.id} className="mb-4 border-2 border-black">
                   <CardHeader>
                     <CardTitle>{post.title}</CardTitle>
                     <CardDescription>

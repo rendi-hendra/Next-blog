@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Head from "next/head";
 
 const registerFormSchema = z.object({
   name: z.string().min(4).max(50),
@@ -53,6 +54,9 @@ export default function Register() {
 
   return (
     <main>
+      <Head>
+        <title>Register</title>
+      </Head>
       <div className="flex h-screen ">
         <div className="lg:flex items-center justify-center flex-1 bg-white text-black flex ">
           <div className="md:w-[30rem] lg:w-[30rem] flex items-center justify-center shadow-lg rounded-xl mx-5">

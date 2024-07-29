@@ -68,7 +68,7 @@ export function UserNav() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button variant="ghost" className="relative h-9 w-9 rounded-full">
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={session.user?.image ?? ""}
@@ -78,32 +78,30 @@ export function UserNav() {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent
+          className="w-56"
+          align="end"
+          forceMount
+        >
           <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-1 ">
               <p className="text-sm font-medium leading-none">
                 {session.user?.name}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
                 {session.user?.email}
               </p>
-              <p className="text-xs leading-none text-muted-foreground">
+              <p className={`text-xs leading-none text-muted-foreground ${session.user?.role === "User" ? "font-normal" : "font-bold text-red-500"}`}>
                 {session.user?.role}
               </p>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuSeparator className="border border-black" /> */}
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              Profile
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
           </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>
-            Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          {/* <DropdownMenuSeparator className="border border-black" /> */}
+          <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
