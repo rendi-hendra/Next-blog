@@ -1,6 +1,7 @@
 "use client";
 
 import { Familjen_Grotesk } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const grotesk = Familjen_Grotesk({
@@ -19,7 +20,10 @@ export default function RootLayout({
         jsx
         global
       >{`:root { --font-grotesk: ${grotesk.style.fontFamily};}}`}</style>
-      <body className={`font-sans ${grotesk.variable}`}>{children}</body>
+      <body className={`font-sans ${grotesk.variable}`}>
+        {children}
+        <Toaster richColors />
+      </body>
     </html>
   );
 }

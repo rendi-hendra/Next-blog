@@ -62,7 +62,7 @@
   .neu {
     /* box-shadow: 3px 3px 0px 0px #000;
     margin: 0px 3px 3px 0px; */
-    @apply border-foreground mb-[3px] mr-[3px] border-2 shadow;
+    @apply border-foreground mb-[20px] mr-[3px] border-2 shadow;
   }
 
   .neu-pressed {

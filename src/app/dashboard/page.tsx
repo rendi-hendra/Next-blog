@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Link from "next/link";
 
 type DataPost = {
   id: number;
@@ -49,25 +50,27 @@ export default function Dashboard() {
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex flex-col space-y-3">
-                  <Skeleton className="h-[200px] rounded-xl" />
+                  <Skeleton className="h-[200px]" />
                   <div className="space-y-2"></div>
                 </div>
               ))
             : data?.map((post) => (
-                <Card key={post.id} className="mb-4 border-2 border-black">
-                  <CardHeader>
-                    <CardTitle>{post.title}</CardTitle>
-                    <CardDescription>
-                      {post.author} | {post.category}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{post.body}</p>
-                  </CardContent>
-                  <CardFooter className="text-zinc-500">
-                    <p>{post.createdAt}</p>
-                  </CardFooter>
-                </Card>
+                <Link key={post.id} href={`/dashboard/post/${post.slug}`}>
+                  <Card className="mb-10 border-2 border-black cursor-pointer bg-slate-100 hover:bg-white">
+                    <CardHeader>
+                      <CardTitle>{post.title}</CardTitle>
+                      <CardDescription>
+                        {post.author} | {post.category}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{post.body}</p>
+                    </CardContent>
+                    <CardFooter className="text-zinc-500">
+                      <p>{post.createdAt}</p>
+                    </CardFooter>
+                  </Card>
+                </Link>
               ))}
         </div>
       </ScrollArea>

@@ -19,9 +19,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { LoginFormSchema, loginFormSchema } from "@/lib/formSchema";
+import { toast } from "sonner";
 
 export default function Login() {
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   const form = useForm<LoginFormSchema>({
@@ -31,26 +34,35 @@ export default function Login() {
   const { handleSubmit, control } = form;
 
   const onSubmit = handleSubmit((value) => {
-    api
-      .post("/users/login", {
-        email: value.email,
-        password: value.password,
-      })
-      .then((response) => {
-        const token = response.data.data.token;
-        Cookies.set("token", token);
-        router.replace("/dashboard", { scroll: false });
-      })
-      .catch((error) => {
-        setError(error.response.data.errors);
-      });
+    setIsLoading(true);
+      api
+        .post("/users/login", {
+          email: value.email,
+          password: value.password,
+        })
+        .then((response) => {
+          const token = response.data.data.token;
+          Cookies.set("token", token);
+          router.replace("/dashboard", { scroll: false });
+          setIsLoading(false);
+          toast.success("Login successfully", {
+            duration: 5000,
+          });
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          toast.error("Login failed", {
+            duration: 5000,
+          });
+          setError(error.response.data.errors);
+        });
   });
 
   return (
     <main>
       <div className="flex h-screen ">
         <div className="lg:flex items-center justify-center flex-1 bg-white text-black flex ">
-          <div className="md:w-[30rem] lg:w-[30rem] flex items-center justify-center shadow-lg rounded-xl mx-5">
+          <div className="md:w-[30rem] lg:w-[30rem] flex items-center border-2 border-black justify-center rounded-xl mx-5">
             <div className="max-w-md w-full p-6">
               <h1 className="text-3xl font-semibold mb-6 text-black text-center">
                 Login
@@ -88,7 +100,7 @@ export default function Login() {
                   />
                   <p className="text-red-500">{error}</p>
                   <div>
-                    <Button type="submit" className="w-full ">
+                    <Button type="submit" className="w-full" disabled={isLoading}>
                       Login
                     </Button>
                   </div>

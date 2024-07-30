@@ -29,6 +29,8 @@ type RegisterFormSchema = z.infer<typeof registerFormSchema>;
 
 export default function Register() {
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   const form = useForm<RegisterFormSchema>({
@@ -38,6 +40,7 @@ export default function Register() {
   const { handleSubmit, control } = form;
 
   const onSubmit = handleSubmit((val) => {
+    setIsLoading(true);
     api
       .post("/users", {
         name: val.name,
@@ -45,9 +48,11 @@ export default function Register() {
         password: val.password,
       })
       .then((response) => {
+        setIsLoading(false);
         router.push("/login");
       })
       .catch((error) => {
+        setIsLoading(false);
         setError(error.response.data.errors);
       });
   });
