@@ -18,5 +18,6 @@ export const navItems: NavItem[] = [
     href: "/dashboard/profile",
     icon: "profile",
     label: "profile",
+    role: "Super Admin"
   },
 ];

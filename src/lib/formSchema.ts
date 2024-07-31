@@ -15,6 +15,11 @@ export const postFormSchema = z.object({
   }),
 });
 
+export const profileSchema = z.object({
+  name: z.string().min(4).max(50).optional(),
+  password: z.string().min(4).optional(),
+});
+
 export type Category = {
   id: number;
   name: string;
@@ -22,3 +27,4 @@ export type Category = {
 
 export type LoginFormSchema = z.infer<typeof loginFormSchema>;
 export type PostFormSchema = z.infer<typeof postFormSchema>;
+export type ProfileSchema = z.infer<typeof profileSchema>;

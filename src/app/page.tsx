@@ -64,7 +64,7 @@ export default function Register() {
       </Head>
       <div className="flex h-screen ">
         <div className="lg:flex items-center justify-center flex-1 bg-white text-black flex ">
-          <div className="md:w-[30rem] lg:w-[30rem] flex items-center justify-center shadow-lg rounded-xl mx-5">
+          <div className="md:w-[30rem] lg:w-[30rem] flex items-center border-2 border-black justify-center shadow-lg rounded-xl mx-5">
             <div className="max-w-md w-full p-6">
               <h1 className="text-3xl font-semibold mb-6 text-black text-center">
                 Sign Up
@@ -115,7 +115,7 @@ export default function Register() {
                   />
                   <p className="text-red-500">{error}</p>
                   <div>
-                    <Button type="submit" className="w-full ">
+                    <Button type="submit" className="w-full" disabled={isLoading}>
                       Sing Up
                     </Button>
                   </div>

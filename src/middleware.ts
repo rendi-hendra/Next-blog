@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
   const publicRoutes = ["/login", "/"];
 
   // Halaman yang memerlukan autentikasi
-  const protectedRoutes = ["/dashboard", "/dashboard/post"];
+  const protectedRoutes = ["/dashboard", "/dashboard/post", "/dashboard/profile"];
 
   let userToken = false;
   if (token) {

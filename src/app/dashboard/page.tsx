@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import {useSearchParams} from "next/navigation";
 
 type DataPost = {
   id: number;
@@ -25,26 +26,30 @@ type DataPost = {
   createdAt: string;
 };
 
+
 export default function Dashboard() {
   const token = Cookies.get("token");
   const [data, setData] = useState<DataPost[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const queryAuthor = useSearchParams().get("author");
+  const queryCategory = useSearchParams().get("category");
 
   useEffect(() => {
     api
       .get("/posts", {
         headers: { Authorization: token },
+        params: {author: queryAuthor, category: queryCategory},
       })
       .then((response) => {
         setData(response.data.data);
         setIsLoading(false);
       });
-  }, []);
+  }, [queryAuthor, queryCategory]);
 
   return (
     <>
       <ScrollArea className="h-full">
-        <h1 className="text-center text-4xl mt-10">Dashboard</h1>
+        <h1 className="text-center text-4xl mt-10 font-bold">Dashboard</h1>
 
         <div className="mx-3 mt-10 mb-10 lg:mx-10">
           {isLoading
@@ -56,9 +61,11 @@ export default function Dashboard() {
               ))
             : data?.map((post) => (
                 <Link key={post.id} href={`/dashboard/post/${post.slug}`}>
-                  <Card className="mb-10 border-2 border-black cursor-pointer bg-slate-100 hover:bg-white">
+                  <Card className="mb-10 border-2 border-black cursor-pointer bg-slate-100 hover:bg-white neu neu-active">
                     <CardHeader>
-                      <CardTitle>{post.title}</CardTitle>
+                      <CardTitle className="">
+                        {post.title}
+                      </CardTitle>
                       <CardDescription>
                         {post.author} | {post.category}
                       </CardDescription>

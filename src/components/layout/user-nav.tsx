@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/lib/api";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -98,7 +99,9 @@ export function UserNav() {
           </DropdownMenuLabel>
           {/* <DropdownMenuSeparator className="border border-black" /> */}
           <DropdownMenuGroup>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/dashboard/profile">Profile</Link>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           {/* <DropdownMenuSeparator className="border border-black" /> */}
           <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>

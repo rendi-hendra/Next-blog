@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSidebar } from "@/hooks/useSidebar";
 import {
   Tooltip,
@@ -14,12 +14,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { api } from "@/lib/api";
+import Cookies from "js-cookie";
 
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: Dispatch<SetStateAction<boolean>>;
   isMobileNav?: boolean;
 }
+
+type DataUser = {
+  name: string;
+  email: string;
+  role: string;
+};
 
 export function DashboardNav({
   items,
@@ -28,10 +36,29 @@ export function DashboardNav({
 }: DashboardNavProps) {
   const path = usePathname();
   const { isMinimized } = useSidebar();
+  const cookie = Cookies.get("token");
 
   if (!items?.length) {
     return null;
   }
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [data, setData] = useState<DataUser>();
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    api
+      .get("/users/current", {
+        headers: { Authorization: cookie },
+      })
+      .then((response) => {
+        console.log("Render");
+        setData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data.errors);
+      });
+  }, []);
 
   // console.log('isActive', isMobileNav, isMinimized);
 
@@ -55,10 +82,11 @@ export function DashboardNav({
                       if (setOpen) setOpen(false);
                     }}
                   >
+                    
                     <Icon className={`ml-3 size-5`} />
 
                     {isMobileNav || (!isMinimized && !isMobileNav) ? (
-                      <span className="mr-2 truncate">{item.title}</span>
+                      <span className="mr-2 truncate font-semibold text-lg">{item.title}</span>
                     ) : (
                       ""
                     )}
