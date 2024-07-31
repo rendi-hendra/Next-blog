@@ -28,6 +28,7 @@ export function UserNav() {
   const router = useRouter();
 
   const [data, setData] = useState<DataUser>();
+  const [imageSrc, setImageSrc] = useState<string>("");
 
   useEffect(() => {
     api
@@ -37,6 +38,22 @@ export function UserNav() {
       .then((response) => {
         console.log("Render");
         setData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data.errors);
+      });
+
+      api
+      .get("/profiles/current", {
+        headers: { Authorization: cookie },
+        responseType: "arraybuffer",
+      })
+      .then((response) => {
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
+        const url = URL.createObjectURL(blob);
+        setImageSrc(url);
       })
       .catch((error) => {
         console.log(error.response.data.errors);
@@ -62,7 +79,7 @@ export function UserNav() {
       name: data?.name,
       email: data?.email,
       role: data?.role,
-      image: "",
+      image: imageSrc,
     },
   };
   if (session) {

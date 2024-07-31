@@ -129,7 +129,7 @@ export default function Profile() {
   return (
     <div>
       <div className="flex justify-center mt-10">
-        <Card className="w-96 h-52 flex items-center border-2">
+        <Card className="w-[30rem] h-52 flex items-center border-2 mx-10">
           <div>
             <Avatar className="border-4 border-black w-28 h-28 ml-5">
               <AvatarImage src={imageSrc} />
@@ -149,20 +149,20 @@ export default function Profile() {
           <div className="mr-5">
             <p className="font-semibold text-lg">{data?.name}</p>
             <p className="">{data?.email}</p>
-            <Badge variant="outline" className="bg-red-500 mt-3">
+            <Badge variant="outline" className="bg-red-400 mt-3">
               {data?.role}
             </Badge>
           </div>
         </Card>
       </div>
-      <div className="lg:mx-72 mx-10 mt-20">
+      <div className="lg:mx-96 mx-10 mt-10">
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={control}
               name="name"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="mb-10">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input type="text" {...field} defaultValue={data?.name} />
@@ -186,7 +186,7 @@ export default function Profile() {
             />
             <p className="text-red-500">{error}</p>
             <div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full mt-5" disabled={isLoading}>
                 Update
               </Button>
             </div>

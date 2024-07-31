@@ -26,6 +26,8 @@ type DataPost = {
 
 export default function Blog({ params }: { params: { slug: string } }) {
   const breadcrumbItems = [
+    { title: "Dashboard", link: "/dashboard" },
+    { title: "Post", link: "/dashboard/post" },
     { title: `${params.slug}`, link: `/dashboard/post/${params.slug}` },
   ];
 

@@ -52,8 +52,8 @@ export function DashboardNav({
         headers: { Authorization: cookie },
       })
       .then((response) => {
-        console.log("Render");
         setData(response.data.data);
+        // console.log(response.data.data);
       })
       .catch((error) => {
         console.log(error.response.data.errors);

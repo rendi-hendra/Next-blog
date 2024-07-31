@@ -18,11 +18,19 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
 
+  const queryAuthor = req.nextUrl.searchParams.get("author")
+  const queryCategory = req.nextUrl.searchParams.get("category")
+  const parts = pathname.split('/');
+  const slug = parts[parts.length - 1];
+  
+  
+  
+
   // Halaman yang tidak memerlukan autentikasi
   const publicRoutes = ["/login", "/"];
 
   // Halaman yang memerlukan autentikasi
-  const protectedRoutes = ["/dashboard", "/dashboard/post", "/dashboard/profile"];
+  const protectedRoutes = ["/dashboard", "/dashboard/admin", "/dashboard/post", "/dashboard/profile", `/dashboard/post/${slug}`, `/dashboard/post/${queryAuthor}`, `/dashboard/post/${queryCategory}`];
 
   let userToken = false;
   if (token) {
