@@ -4,7 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -62,11 +61,6 @@ export default function Admin() {
             <NavigationMenuTrigger>Role</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                {/* <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-
-                  </NavigationMenuLink>
-                </li> */}
                 <ListItem href="/docs" title="Create Role"></ListItem>
                 <ListItem
                   href="/docs/installation"

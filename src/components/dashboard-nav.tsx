@@ -38,14 +38,9 @@ export function DashboardNav({
   const { isMinimized } = useSidebar();
   const cookie = Cookies.get("token");
 
-  if (!items?.length) {
-    return null;
-  }
+  const [data, setData] = useState<DataUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [data, setData] = useState<DataUser>();
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     api
       .get("/users/current", {
@@ -53,19 +48,34 @@ export function DashboardNav({
       })
       .then((response) => {
         setData(response.data.data);
-        // console.log(response.data.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error.response.data.errors);
+        setLoading(false);
       });
-  }, []);
+  }, [cookie]);
 
-  // console.log('isActive', isMobileNav, isMinimized);
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading state while data is being fetched
+  }
+
+  if (!data) {
+    return null; // Hide nav if no data
+  }
+
+  // Filter items based on user role
+  const filteredItems = items.filter((item) => {
+    if (data.role === "Admin" || data.role === "Super Admin") {
+      return true; // Show all items for Admin and Super Admin
+    }
+    return item.role !== "Admin" && item.role !== "Super Admin"; // Hide admin items for non-admin users
+  });
 
   return (
     <nav className="grid items-start gap-2">
       <TooltipProvider>
-        {items.map((item, index) => {
+        {filteredItems.map((item, index) => {
           const Icon = Icons[item.icon || "arrowRight"];
           return (
             item.href && (
@@ -82,11 +92,11 @@ export function DashboardNav({
                       if (setOpen) setOpen(false);
                     }}
                   >
-                    
                     <Icon className={`ml-3 size-5`} />
-
                     {isMobileNav || (!isMinimized && !isMobileNav) ? (
-                      <span className="mr-2 truncate font-semibold text-lg">{item.title}</span>
+                      <span className="mr-2 truncate font-semibold text-lg">
+                        {item.title}
+                      </span>
                     ) : (
                       ""
                     )}
